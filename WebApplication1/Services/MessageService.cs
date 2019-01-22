@@ -12,12 +12,15 @@ namespace WebApplication1.Services
     public class MessageService
     {
         private readonly IMongoCollection<Message> _Message;
+        private readonly IMongoCollection<Users> _User;
+
         public MessageService(IConfiguration config)
         {
             var client = new MongoClient(config.GetConnectionString("PeopleDb"));
             var Database = client.GetDatabase("PeopleDb");
             _Message = Database.GetCollection<Message>("MessageCollection");
         }
+
 
         public  async  Task<Message> SendMessage(Message  msg)
         {
@@ -30,7 +33,7 @@ namespace WebApplication1.Services
             var userMain = new ObjectId(SenderID);
             var Receiver = new ObjectId(ReceiverID);
 
-            var Result = _Message.Find(m => (m.Sender == userMain && m.Receiver == Receiver) || (m.Sender == Receiver && m.Receiver == userMain)).ToListAsync();
+            var Result = _Message.Find(m => (m.Sender == userMain && m.Receiver == Receiver && m.DeleteS == false) || (m.Sender == Receiver && m.Receiver == userMain && m.DeleteR == false )).ToListAsync();
             
             if(Result == null)
             {
