@@ -29,6 +29,7 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<UserService>();
+            services.AddScoped<MessageService>();
             services.AddDbContext<MessageContext>(opt => opt.UseInMemoryDatabase("Peoples"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

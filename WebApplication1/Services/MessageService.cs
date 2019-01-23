@@ -12,7 +12,7 @@ namespace WebApplication1.Services
     public class MessageService
     {
         private readonly IMongoCollection<Message> _Message;
-        private readonly IMongoCollection<Users> _User;
+       
 
         public MessageService(IConfiguration config)
         {
@@ -28,6 +28,10 @@ namespace WebApplication1.Services
             return msg;
         }
 
+        public async Task<List<Message>> GetMessagesAsync()
+        {
+            return await _Message.Find(_Message => true).ToListAsync();
+        }
         public async Task<List<Message>> GetMessagesAsync(string SenderID, string ReceiverID)
         {
             var userMain = new ObjectId(SenderID);
